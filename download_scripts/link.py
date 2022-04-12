@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
 
         # link data
-        os.system(f'ln -s {source_dir}/era5_data_{datestring}_{hourstring} {dest_dir}/era5_data_{startdatestring}.t{inc_string}')
+        os.system(f'ln -s {source_dir}/era5_data_{datestring}_{hourstring}.grib {dest_dir}/era5_data_{startdatestring}.t{inc_string}')
         
         # increment the system
         increment_sum += hour_inc
