@@ -12,8 +12,8 @@ c = cdsapi.Client()
  
 
 # Set dates for data extraction
-idate = date(2018,8,1)
-edate = date(2018,8,2)
+idate = date(2010,6,1)
+edate = date(2010,6,30)
 
 # Set hours for each date to extract
 hours = ['00', '06', '12', '18']
