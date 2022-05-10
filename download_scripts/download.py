@@ -86,7 +86,7 @@ while (idate <= edate):
             "surface.grib")
         
         # combine and rename data files
-        os.system(f'cat preslev.grib surface.grib > era5_data_{strdate}_{hour}.grib')
+        os.system(f'cat preslev.grib surface.grib > ec_grib_{strdate}{hour}00.t+000')
         os.system('rm surface.grib preslev.grib')
         
     # move to next day
