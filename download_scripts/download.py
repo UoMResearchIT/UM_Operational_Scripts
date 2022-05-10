@@ -16,7 +16,7 @@ idate = date(2010,6,1)
 edate = date(2010,6,30)
 
 # Set hours for each date to extract
-hours = ['00', '06', '12', '18']
+hours = ['00', '03', '06', '09', '12', '15', '18', '21']
 
 while (idate <= edate):
 
