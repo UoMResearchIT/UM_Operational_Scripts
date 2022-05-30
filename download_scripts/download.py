@@ -17,6 +17,7 @@ edate = date(2010,6,30)
 
 # Set hours for each date to extract
 hours = ['00', '03', '06', '09', '12', '15', '18', '21']
+area_limits = ['30', '260', '-55', '345']
 
 while (idate <= edate):
 
@@ -60,7 +61,7 @@ while (idate <= edate):
                     '1000',
                 ],
                 'time': [f'{hour}:00'],
-                'area': [25, -95, -50, -20],
+                'area': area_limits,
             },
             "preslev.grib")
     
@@ -81,7 +82,7 @@ while (idate <= edate):
                     'snow_density', 'snow_depth'
                 ],
                 'time': [f'{hour}:00'],
-                'area': [25, -95, -50, -20],
+                'area': area_limits,
             },
             "surface.grib")
         
