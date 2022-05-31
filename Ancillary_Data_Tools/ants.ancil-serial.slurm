@@ -10,16 +10,20 @@
 #SBATCH --qos=serial
 #SBATCH --mem=124G
 
+module load nco
+module load cray-hdf5
+module load cray-netcdf
+
 ANTS_HOME=$(pwd -P)
 ANTS_CONTAINER=/work/y07/shared/umshared/ANTS/latest/ants_latest.sif
 #export SINGULARITYENV_APPEND_PATH=$(pwd -P)"/bin"
-ANTS_OUT=$(pwd -P)"/ants_out.nc"
-CCI_FILE="ESACCI-LC-L4-LCCS-Map-300m-P1Y-2010-v2.0.7b.nc"
-IGBP_FILE="modis_landcover_class_qd.asc"
+ANTS_OUT=$(pwd -P)"/qrparm.veg.frac"
+CCI_FILE="regrid_out.nc"
 CONFIG_FILE="ants.highmem.config"
 
+ncatted -a source,global,c,c,'Met Office Unified Model v11.7' $CCI_FILE
+
 singularity exec --home $ANTS_HOME $ANTS_CONTAINER \
-            bin/ancil_lct_preproc_cci.py $CCI_FILE \
+            bin/ancil_2anc.py $CCI_FILE \
             --output $ANTS_OUT \
-            --igbp-source $IGBP_FILE \
-            --ants-config $CONFIG_FILE
+            --grid-staggering=6

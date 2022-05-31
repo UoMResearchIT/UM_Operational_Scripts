@@ -13,13 +13,12 @@
 ANTS_HOME=$(pwd -P)
 ANTS_CONTAINER=/work/y07/shared/umshared/ANTS/latest/ants_latest.sif
 #export SINGULARITYENV_APPEND_PATH=$(pwd -P)"/bin"
-ANTS_OUT=$(pwd -P)"/ants_out.nc"
-CCI_FILE="ESACCI-LC-L4-LCCS-Map-300m-P1Y-2010-v2.0.7b.nc"
-IGBP_FILE="modis_landcover_class_qd.asc"
+ANTS_OUT=$(pwd -P)"/postC4_out.nc"
+CCI_FILE="lct_out.nc"
 CONFIG_FILE="ants.highmem.config"
+C4_FILE="c4_percent_1d.nc"
 
 singularity exec --home $ANTS_HOME $ANTS_CONTAINER \
-            bin/ancil_lct_preproc_cci.py $CCI_FILE \
+            bin/ancil_lct_postproc_c4.py $CCI_FILE \
             --output $ANTS_OUT \
-            --igbp-source $IGBP_FILE \
-            --ants-config $CONFIG_FILE
+            --islscpiic4 $C4_FILE
