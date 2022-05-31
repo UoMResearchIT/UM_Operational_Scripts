@@ -14,8 +14,6 @@ A python based API client is available, installable via either `pip` or `conda`.
 
 To get access to the ERA5 data you should create a user account, and accept the licence agreement at the [Copernicus Climate Data Store](https://cds.climate.copernicus.eu/cdsapp/#!/terms/licence-to-use-copernicus-products). Once you have accepted the license, then you will need to save the url and key within your home directory in the file: `.cdsapirc`
 
-
-
 ## Downloading Data
 
 Included here is the download script, `download.py`, and an example job submission script, `era5_download.slurm`, which is configured for ARCHER2. The download script will return volumetric and surface data in a single date file, following the naming convention `ec_grib_YYYYMMDDHH00.t+000`. This is designed to be directly compatible with the UM input data naming convention.
@@ -31,5 +29,3 @@ Included here is the download script, `download.py`, and an example job submissi
    1) The array is organised as: `['North Lat', 'West Long', 'South Lat', 'East Long']`
    
    2) Make sure to allow enough space around your domain to fit the boundary ancillary data. As a rule of thumb, add an extra 5 degrees to your domain to account for these.
-
-
