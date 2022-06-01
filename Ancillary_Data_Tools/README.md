@@ -13,8 +13,20 @@ The scripts in this repository are intended for creating ancillary data for a li
 These should be taken directly from the Met Office code repository:
 
 ```bash
-svn checkout https://code.metoffice.gov.uk/svn/ancil/ants/tags/0.19.0/bin/
+svn checkout --username <username> https://code.metoffice.gov.uk/svn/ancil/ants/tags/0.19.0/bin/
 ```
+
+Replace `<username>` with your Met Office user account name, and enter your password when it is requested.
+
+###### Download Transform Tables
+
+These should also be taken directly from the Met Office code repository:
+
+```bash
+svn checkout --username <username> https://code.metoffice.gov.uk/svn/ancil/data/trunk/transforms/
+```
+
+Replace `<username>` with your Met Office user account name, and enter your password when it is requested.
 
 ###### Download Land Use Data
 
@@ -34,7 +46,37 @@ scp modis_landcover_class_qd.asc <username>@login.archer2.ac.uk:/work/n02/n02/<u
 
 ## Running the Software
 
-###### `ancil_lct_preproc_cci.py`
+This is how to create the ancillary data, using the ESA CCI land use data, for your nested domain (using suite `u-cn801`).
+
+1. Run suite to create new ancillaries only:
+   
+   1. In `rg01_rs01_ancil_mode` set `MAKE_ANCILS_ONLY` to <u>True</u>
+
+2. Copy the `grid.nl` and `qrparm.mask` files:
+   
+   1. ```bash
+      cp /work/n02/n02/<username>/cylc-run/u-cn801/share/data/ancils/Regn1/resn_1/grid.nl .
+      ```
+   
+   2. ```bash
+      cp /work/n02/n02/<username>/cylc-run/u-cn801/share/data/ancils/Regn1/resn_1/qrparm.mask .
+      ```
+
+3. **Run the Preprocessing Steps (1 to 5) listed below.**
+
+4. Replace `qrparm.veg.frac` in the run ancil directory:
+   
+   1. ```bash
+      cp /work/n02/n02/<username>/ants3/qrparm.veg.frac work/n02/n02/<username>/cylc-run/u-cn801/share/data/ancils/Regn1/resn_1/
+      ```
+
+5. Run the suite without creating the ancillaries again:
+   
+   1. In `rg01_rs01_ancil_mode` set `MAKE_ANCILS_ONLY` to <u>False</u>
+   
+   2. In `rg01_rs01_ancil_mode` set `Create New Ancillaries` to <u>False</u>
+
+###### STEP 1:`ancil_lct_preproc_cci.py`
 
 Edit the `ants.preproc-serial.archer2.slurm` file to change the user account, and submit using:
 
@@ -44,7 +86,7 @@ sbatch ants.preproc-serial.archer2.slurm
 
 This is run as a serial job, so that geographic data can be downloaded as needed. It will create the `ants_out.nc` file.
 
-###### `ancil_lct.py`
+###### STEP 2: `ancil_lct.py`
 
 The crosswalk table will need editing to add the resolved lake data (created in the previous step). First copy the table:
 
@@ -52,20 +94,18 @@ The crosswalk table will need editing to add the resolved lake data (created in 
 cp transforms/cci2jules_ra1.json bin/cci2jules_ra1_reslakes.json
 ```
 
-Then edit the `cci2jules_ra1_reslakes.json` file to add the following lines to 
+Then edit the `cci2jules_ra1_reslakes.json` file to add the following lines to these two lists (as the final item in each):
 
 1. the `cover_map`:
 
 ```json
-           [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0],
-           [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0]],
+           [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0],
 ```
 
 2. the `source`:
 
 ```json
-           "snow_and_ice",
-           "resolved_lake"],
+           "resolved_lake",
 ```
 
 **Or** copy this file:
@@ -82,9 +122,9 @@ sbatch ants.lct-serial.archer2.slurm
 
 This will create the `lct_out.nc` file.
 
-###### `ancil_lct_postproc_c4.py`
+###### STEP 3: `ancil_lct_postproc_c4.py`
 
-Download the `c4_percent_1d.asc` datafile from [https://daac.ornl.gov/ISLSCP_II/guides/c4_percent_1deg.html](https://daac.ornl.gov/ISLSCP_II/guides/c4_percent_1deg.html), and copy across to ARCHER2:
+Download the `c4_percent_1d.asc` datafile from [https://daac.ornl.gov/ISLSCP_II/guides/c4_percent_1deg.html](https://daac.ornl.gov/ISLSCP_II/guides/c4_percent_1deg.html) (this will require you to create an EarthData login account), and copy across to ARCHER2:
 
 ```bash
 scp c4_percent_1d.asc <username>@login.archer2.ac.uk:/work/n02/n02/<username>/ants3
@@ -94,7 +134,7 @@ This file does not contain latitude or longitude data, so these must be loaded f
 
 ```bash
 svn checkout https://code.metoffice.gov.uk/svn/ancil/ants/trunk/rose-test/resources/
-cp resources/c4_percent_1d.nc
+cp resources/c4_percent_1d.nc .
 ```
 
 **NOTE**: Although we have downloaded high resolution C4 data, the C3:C4 ratios are still at a low resolution, and so the coverage of C3 and C4 are very blocky. It would be better to either parameterise this ratio, or update to higher resolution data when it comes available.
@@ -105,7 +145,7 @@ Edit the `ants.postC4-serial.archer2.slurm` file to change the user account, and
 sbatch ants.postC4-serial.archer2.slurm
 ```
 
-###### `ancil_general_regrid.py`
+###### STEP 4: `ancil_general_regrid.py`
 
 Edit the `ants.regrid-serial.archer2.slurm` file to change the user account, and submit using:
 
@@ -113,7 +153,7 @@ Edit the `ants.regrid-serial.archer2.slurm` file to change the user account, and
 sbatch ants.regrid-serial.archer2.slurm
 ```
 
-###### `ancil_2anc.py` / `ancil_ancil.py`
+###### STEP 5: `ancil_2anc.py` / `ancil_ancil.py`
 
 Edit the `ants.ancil-serial.slurm` file to change the user account, and submit using:
 
@@ -123,22 +163,6 @@ sbatch ants.ancil-serial.slurm
 
 This creates the `qrparm.veg.frac` file (as well as a netcdf file, which is not needed).
 
-###### Running UM with ESA CCI land use data
+###### 
 
-This is how to create the ancillary data for your nested domain (using suite `u-cn801`).
 
-1. Run suite to create new ancillaries only:
-   
-   1. In `rg01_rs01_ancil_mode` set `MAKE_ANCILS_ONLY` to <u>True</u>
-
-2. Replace `qrparm.veg.frac` in the run ancil directory:
-   
-   1. ```bash
-      cp /work/n02/n02/<username>/ants3/qrparm.veg.frac work/n02/n02/<username>/cylc-run/u-cn801/share/data/ancils/Regn1/resn_1/
-      ```
-
-3. Run the suite without creating the ancillaries again:
-   
-   1. In `rg01_rs01_ancil_mode` set `MAKE_ANCILS_ONLY` to <u>False</u>
-   
-   2. In `rg01_rs01_ancil_mode` set `Create New Ancillaries` to <u>False</u>
