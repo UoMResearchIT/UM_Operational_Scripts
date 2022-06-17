@@ -1,2 +1,4 @@
 slurm*
 ec_grib*
+*.nc
+**/bin/
