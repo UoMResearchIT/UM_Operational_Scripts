@@ -19,4 +19,4 @@ LSM_OUT="cci_maskout"
 
 #singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct.py $CCI_FILE --output $ANTS_OUT --target-grid grid.nl --transform-path bin/cci2jules_ra1_reslakes.json
 #singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct.py $CCI_FILE --output $ANTS_OUT --target-lsm qrparm.mask_highres --transform-path bin/cci2jules_ra1_reslakes.json
-singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct.py $CCI_FILE --output $ANTS_OUT --target-grid grid.nl --transform-path bin/cci2jules.json --landseamask-output $LSM_OUT --land-threshold 0
+singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct.py $CCI_FILE --output $ANTS_OUT --target-grid grid.nl --transform-path bin/cci2jules2.json --landseamask-output $LSM_OUT --land-threshold 0
