@@ -13,10 +13,10 @@
 ANTS_HOME=$(pwd -P)
 ANTS_CONTAINER=/work/y07/shared/umshared/ANTS/latest/ants_latest.sif
 #export SINGULARITYENV_APPEND_PATH=$(pwd -P)"/bin"
-ANTS_OUT=$(pwd -P)"/lct_out4.nc"
-CCI_FILE="ants_out3.nc"
+ANTS_OUT=$(pwd -P)"/lct_out.nc"
+CCI_FILE="ants_out.nc"
 LSM_OUT="cci_maskout"
 
 #singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct.py $CCI_FILE --output $ANTS_OUT --target-grid grid.nl --transform-path bin/cci2jules_ra1_reslakes.json
 #singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct.py $CCI_FILE --output $ANTS_OUT --target-lsm qrparm.mask_highres --transform-path bin/cci2jules_ra1_reslakes.json
-singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct.py $CCI_FILE --output $ANTS_OUT --target-grid grid.nl --transform-path bin/cci2jules2.json --landseamask-output $LSM_OUT --land-threshold 0
+singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct.py $CCI_FILE --output $ANTS_OUT --target-grid grid.nl --transform-path bin/cci2jules2.json --landseamask-output $LSM_OUT
