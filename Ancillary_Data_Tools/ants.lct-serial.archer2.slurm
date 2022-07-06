@@ -16,7 +16,6 @@ ANTS_CONTAINER=/work/y07/shared/umshared/ANTS/latest/ants_latest.sif
 ANTS_OUT=$(pwd -P)"/lct_out.nc"
 CCI_FILE="ants_out.nc"
 LSM_OUT="cci_maskout"
+CONFIG_FILE="ants.config"
 
-#singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct.py $CCI_FILE --output $ANTS_OUT --target-grid grid.nl --transform-path bin/cci2jules_ra1_reslakes.json
-#singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct.py $CCI_FILE --output $ANTS_OUT --target-lsm qrparm.mask_highres --transform-path bin/cci2jules_ra1_reslakes.json
-singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct.py $CCI_FILE --output $ANTS_OUT --target-grid grid.nl --transform-path bin/cci2jules2.json --landseamask-output $LSM_OUT
+singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct.py $CCI_FILE --output $ANTS_OUT --target-grid grid.nl --transform-path bin/cci2jules.json --landseamask-output $LSM_OUT --ants-config $CONFIG_FILE

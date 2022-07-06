@@ -9,3 +9,4 @@ Ancillary_Data_Tools/.local/
 Ancillary_Data_Tools/ants.log
 Ancillary_Data_Tools/cci_maskout/
 *core*
+*.tif
