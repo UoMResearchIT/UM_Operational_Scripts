@@ -1,0 +1,14 @@
+&grid
+delta_lambda_targ=0.0405,
+delta_phi_targ=0.0405,
+global=.false.,
+igrid_targ=6,
+inwsw=1,
+lambda_origin_targ=274.96005,
+lambda_pole=180.0,
+phi_origin_targ=-40.04005,
+phi_pole=90.0,
+points_lambda_targ=1360,
+points_phi_targ=1360,
+rotated=.false.,
+/
