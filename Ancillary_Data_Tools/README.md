@@ -22,10 +22,14 @@ Replace `<username>` with your Met Office user account name, and enter your pass
 6. **ants.lct-serial.archer2.slurm** to put it into UM format
   
 7. **ants.postC4-serial.archer2.slurm**
+
+8. **ants.regrid.slurm**
   
-8. Check it adds up to 1 and the ocean is masked out
+9. **ants.2anc.slurm**
   
-9. Copy files back to UM ancil directory
+10. **surface_type_merging_with_masks_v3.ipynb**
+
+11. Copy to UM
   
 
 ## 1. Set up
