@@ -99,7 +99,7 @@ ESACCI does not differentiate between ocean and water (i.e. lakes and rivers). T
 
 ## 3. ants.ncap2.slurm
 
-ncap2 is used to change the values in the CCI file as ants requires int8 (-127 to 127) and the ants containter looks hard coded so we cannot edit anything in this, hence the needed to modify the input file. Note the next step ants.preproc-serial.archer2.slurm only changes the metadata, hence the need for this.
+ncap2 is used to change the values in the CCI file as ants requires int8 (-127 to 127). Note that for the next step, **ants.preproc-serial.archer2.slurm**, the metadata has been changed (and extended) to match the values which are set at this step. If you use a different CCI source file then check the modifications made here, to make sure they are appropriate.
 
 ## 4. ants.preproc-serial.archer2.slurm
 
