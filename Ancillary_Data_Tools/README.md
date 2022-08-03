@@ -85,6 +85,13 @@ This is how to create the ancillary data, using the ESA CCI land use data, for y
   
   `cp /work/n02/n02/<username>/cylc-run/u-<id>/share/data/ancils/Regn1/resn_1/qrparm.mask_igbp .`
   
+###### Patch the UM Ancil Tools
+
+Some changes have been made to these tools for this workflow. You can apply these changes using the included patch files.
+```bash
+patch -u -b bin/ancil_lct_preproc_cci.py -i patch.ancil_lct_preproc_cci.txt
+```
+
 
 ## 2. ants.ocean.slurm
 
@@ -96,7 +103,7 @@ ncap2 is used to change the values in the CCI file as ants requires int8 (-127 t
 
 ## 4. ants.preproc-serial.archer2.slurm
 
-This is the ants preprocessing stage. We have made edits to **ancil_lct_preproc_cci.py** in order to correct the metadata (coped below). This overwrites what is called from import ants in the containter. We have created this `bin/ancil_lct_preproc_cci3.py`, and refer to it in the job submission script. Note this file is not coped to git you will have to create it.
+This is the ants preprocessing stage. We have made edits to **ancil_lct_preproc_cci.py** in order to correct the metadata (shown below, and applied by the patch file in the Setup process). This overwrites what is called from import ants in the container.
 
 ```
 def set_flag_metadata2(cube):
@@ -109,7 +116,7 @@ def set_flag_metadata2(cube):
 lct_preproc_cci.set_flag_metadata = set_flag_metadata2
 ```
 
-You will also need to comment # out any lakes in your domain. In our case this was lakes nicaragua and titcaca. Not sure what the ants code is doing but it creates a strange block with incorrect values around these lakes in the output.
+You will also need to comment # out any lakes in your domain. In our case this was lakes nicaragua and titcaca (included in the patch file). Not sure what the ants code is doing but it creates a strange block with incorrect values around these lakes in the output.
 
 ## 5. ants.ncap2.ants_out.slurm
 
