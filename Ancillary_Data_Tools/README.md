@@ -2,10 +2,10 @@
 # <u>Ancillary Data Tools</u>
 
 These are scripts for running the ANTS preprocessors for the Unified Model. Documentation for these preprocessors can be found in the [Met Office ANTS pages](https://code.metoffice.gov.uk/doc/ancil/ants/latest/introduction.html), and an introduction to the ANTS singularity container is available on the [NCAS ANTS pages](https://cms.ncas.ac.uk/miscellaneous/ants-container/).
-These scripts are written for the ANTS v0.18 singularity container. The most recent release of the toolset container at the time of writing (May 2022). However, where necessary, v0.19 scripts have been used, and links to download these are provided below. These scripts are designed for use on the ARCHER2 HPC facility.
+These scripts are written for the ANTS v0.18 singularity container. The most recent release of the toolset container at the time of writing (May-August 2022). However, where necessary, v0.19 scripts have been used, and links to download these are provided below. These scripts are designed for use on the ARCHER2 HPC facility.
 The scripts in this repository are intended for creating ancillary data for a limited area model domain over South America. Some of the configuration and input files included here may be domain specific - replace these with files for your domain if using these scripts for other studies.
 
-Replace `<username>` with your Met Office user account name, and enter your password when it is requested. Scripts can take an hour to run.
+Replace `<username>` with your Met Office user account name, and enter your password when it is requested. Scripts can take upto an hour to run.
 
 ## Overview of run order
 
@@ -51,23 +51,23 @@ ESA CCI data should be downloaded from Copernicus:
 
 [Copernicus Climate Data Store |](https://cds.climate.copernicus.eu/cdsapp#!/dataset/satellite-land-cover?tab=overview)
 
-If data is taken from Copernicus then need to remove a dimension otherwise 3d when expecting 2d and ants throws an error. This is accounted for in the ants.ocean.slurm scripts.
+If data is taken from Copernicus then it is required to remove a dimension, as ants expects 2D data. This is accounted for in the ants.ocean.slurm scripts.
 
 ###### Water bodies
 
-This is added to the CCI, as CCI does not differentiate between ocean and water
+These are added to the CCI, as CCI does not differentiate between ocean and in-land water bodies.
 
 [Index of /neodc/esacci/land_cover/data/water_bodies/v4.0/](https://dap.ceda.ac.uk/neodc/esacci/land_cover/data/water_bodies/v4.0/)
 
 ###### MODIS land cover
 
-MODIS data, use modis_landcover_qdeg (quarter degree)
+MODIS data, use modis_landcover_qdeg (quarter degree).
 
 [ISLSCP II MODIS (Collection 4) IGBP Land Cover, 2000-2001 , https://doi.org/10.3334/ORNLDAAC/968](https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=968)
 
 ###### Upload to archer2
 
-If above files downloaded locally, transfer to archer2
+If above files are downloaded locally, then transfer to them ARCHER2:
 
 ```bash
 scp <filename> <username>@login.archer2.ac.uk:/work/n02/n02/<username>/<antsfolder>
@@ -75,19 +75,22 @@ scp <filename> <username>@login.archer2.ac.uk:/work/n02/n02/<username>/<antsfold
 
 ###### Copy some existing UM ancils
 
-This is how to create the ancillary data, using the ESA CCI land use data, for your nested domain (using suite `u-<id>`).
+First ancillary data should be created, using the ESA CCI land use data, for your nested domain (using suite `u-<id>`).
 
 1. Run suite to create new ancillaries only:
   
   In `rg01_rs01_ancil_mode` set `MAKE_ANCILS_ONLY` to <u>True</u>
   
-2. Copy the `qrparm.mask_igbp` and `grid.nl` file:
+2. Copy the `qrparm.mask_igbp` and `grid.nl` file to this working directory:
   
-  `cp /work/n02/n02/<username>/cylc-run/u-<id>/share/data/ancils/Regn1/resn_1/qrparm.mask_igbp .`
+  ```bash
+  cp /work/n02/n02/<username>/cylc-run/u-<id>/share/data/ancils/Regn1/resn_1/qrparm.mask_igbp .
+  cp /work/n02/n02/<username>/cylc-run/u-<id>/share/data/ancils/Regn1/resn_1/grid.nl .
+  ```
   
 ###### Patch the UM Ancil Tools
 
-Some changes have been made to these tools for this workflow. You can apply these changes using the included patch files.
+Some changes have been made to these tools for this workflow. You should apply these changes using the included patch files.
 ```bash
 patch -u -b bin/ancil_lct_preproc_cci.py -i patch.ancil_lct_preproc_cci.txt
 patch -u -b bin/cci2jules.txt -i patch.cci2jules.txt
@@ -125,11 +128,11 @@ Similar to step3 as the ants preprocessing creates new categories (`sea_ocean_wa
 
 ## 6. ants.lct-serial.archer2.slurm
 
-Transforms CCI land use values to the values used in the UM. Note edits need to made to **cci2jules.json** to match the above CCI value and metadata changes. This is adding no_data and ocean classes. The data is then put onto the grid taken from qrparm.mask_igbp.
+Transforms CCI land use values to the values used in the UM. Note that the **cci2jules.json** file has been patched during the setup process, to match the above CCI value and metadata changes. This patch adds the `no_data` and `ocean` classes. The data is then put onto the grid taken from `qrparm.mask_igbp`.
 
 ## 7. ants.postC4-serial.archer2.slurm
 
-CCI data does contain C4 grass, therefore the category in the UM is currently empty. You can ownload the `c4_percent_1d.asc` datafile from [ISLSCP II C4 Vegetation Percentage](https://daac.ornl.gov/ISLSCP_II/guides/c4_percent_1deg.html) (this will require you to create an EarthData login account), and copy across to ARCHER2 or `cp resources/c4_percent_1d.nc .` as the asc file has no lat/lon info.
+CCI data does not contain C4 grass, therefore the category in the UM is currently empty. You can download the `c4_percent_1d.asc` datafile from [ISLSCP II C4 Vegetation Percentage](https://daac.ornl.gov/ISLSCP_II/guides/c4_percent_1deg.html) (this will require you to create an EarthData login account), and copy across to ARCHER2 or `cp resources/c4_percent_1d.nc .` as the asc file has no lat/lon info.
 
 However, this file is at ~1 degree resolution and when modelling at higher resolutions this will produce a blocky effect.
 
@@ -147,7 +150,7 @@ Put the files in the ancillary file format.
 
 ## 10. surface_type_merging_with_masks_v3.ipynb
 
-IGBP data will have some cells that are not present in CCI and vice versa. We are using the igbp mask as otherwise every ancil would need chaning to a new mask. Without this step the model will fail stating nans ingested. Currently using Jasmin to run this part as python cf library wouldn't install on archer2. Copy qrparm.veg.frac_igbp and the newly created qrparm.veg.frac.cci to Jasmin. Open and run each cell in notebook.
+IGBP data will have some cells that are not present in CCI and vice versa, so the CCI landmask will be different to that of the IGBP data. We continue using the IGBP mask though, as otherwise every ancil would need changing to the new mask. Without this step the model will fail stating nans ingested. Currently using Jasmin to run this part as python cf library wouldn't install on archer2. Copy qrparm.veg.frac_igbp and the newly created qrparm.veg.frac.cci to Jasmin. Open and run each cell in notebook.
 
 ## 11. Copy to UM
 
