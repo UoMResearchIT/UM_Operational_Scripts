@@ -120,7 +120,7 @@ You will also need to comment # out any lakes in your domain. In our case this w
 
 ## 5. ants.ncap2.ants_out.slurm
 
-Similar to step3 as the ants preprocessing creates new categories and they use negative values so simply changing these to positive values.
+Similar to step3 as the ants preprocessing creates new categories (`sea_ocean_water` and `resolved_lake`) and they use negative values (`-45` and `-47`) so these are changed to positive values matching the flags set above (`116` and `118`).
 
 ## 6. ants.lct-serial.archer2.slurm
 
