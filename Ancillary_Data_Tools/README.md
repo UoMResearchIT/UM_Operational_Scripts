@@ -90,6 +90,7 @@ This is how to create the ancillary data, using the ESA CCI land use data, for y
 Some changes have been made to these tools for this workflow. You can apply these changes using the included patch files.
 ```bash
 patch -u -b bin/ancil_lct_preproc_cci.py -i patch.ancil_lct_preproc_cci.txt
+patch -u -b bin/cci2jules.txt -i patch.cci2jules.txt
 ```
 
 
