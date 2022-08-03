@@ -65,6 +65,14 @@ MODIS data, use modis_landcover_qdeg (quarter degree).
 
 [ISLSCP II MODIS (Collection 4) IGBP Land Cover, 2000-2001 , https://doi.org/10.3334/ORNLDAAC/968](https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=968)
 
+###### C3/C4 grass ratio data
+
+CCI data does not contain C4 grass, this is calculated by using C3 grass data, and applying a predetermined C3/C4 ratio. The ANTS resources contains data from [ISLSCP II C4 Vegetation Percentage](https://daac.ornl.gov/ISLSCP_II/guides/c4_percent_1deg.html) (viewing this will require you to create an EarthData login account). To use this you can copy the netcdf datafile: `cp resources/c4_percent_1d.nc .`. However, this file is at ~1 degree resolution and when modelling at higher resolutions this will produce a blocky effect.
+
+Instead we recommend use the grassmapr R package to create higher resolution data. Documentation is available at https://rdrr.io/github/rebeccalpowell/grassmapr/man/grassmapr.html, and the code is at https://github.com/rebeccalpowell/grassmapr. This package is created by the Powell et al. (2012) [Vegetation and soil carbon‐13 isoscapes for South America: integrating remote sensing and ecosystem isotope measurements - Powell - 2012 - Ecosphere - Wiley Online Library](https://esajournals.onlinelibrary.wiley.com/doi/pdf/10.1890/ES12-00162.1)
+
+This should be installed locally, and the script `script.R` run to generate the file **C4_ratio_ndvi.tif**. 
+
 ###### Upload to archer2
 
 If above files are downloaded locally, then transfer to them ARCHER2:
@@ -132,11 +140,7 @@ Transforms CCI land use values to the values used in the UM. Note that the **cci
 
 ## 7. ants.postC4-serial.archer2.slurm
 
-CCI data does not contain C4 grass, therefore the category in the UM is currently empty. You can download the `c4_percent_1d.asc` datafile from [ISLSCP II C4 Vegetation Percentage](https://daac.ornl.gov/ISLSCP_II/guides/c4_percent_1deg.html) (this will require you to create an EarthData login account), and copy across to ARCHER2 or `cp resources/c4_percent_1d.nc .` as the asc file has no lat/lon info.
-
-However, this file is at ~1 degree resolution and when modelling at higher resolutions this will produce a blocky effect.
-
-Instead use the grassmapr R package to create higher resolution data. https://rdrr.io/github/rebeccalpowell/grassmapr/man/grassmapr.html or https://github.com/rebeccalpowell/grassmapr. This package is created by the Powell et al. (2012) [Vegetation and soil carbon‐13 isoscapes for South America: integrating remote sensing and ecosystem isotope measurements - Powell - 2012 - Ecosphere - Wiley Online Library](https://esajournals.onlinelibrary.wiley.com/doi/pdf/10.1890/ES12-00162.1)
+This uses C3/C4 grass ratio data produced in the Setup process.
 
 Run `python c4pc.py` (n.b. on archer2 using python version cray-python/3.8.5.0) then ants.postC4-serial.archer2.slurm
 
