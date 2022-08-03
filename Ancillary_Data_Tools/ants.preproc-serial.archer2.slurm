@@ -18,4 +18,4 @@ CCI_FILE="ESACCI2.nc"
 IGBP_FILE="modis_landcover_class_qd.asc"
 CONFIG_FILE="ants.highmem.config"
 
-singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct_preproc_cci3.py $CCI_FILE --output $ANTS_OUT --igbp-source $IGBP_FILE --ants-config $CONFIG_FILE
+singularity exec --home $ANTS_HOME $ANTS_CONTAINER bin/ancil_lct_preproc_cci.py $CCI_FILE --output $ANTS_OUT --igbp-source $IGBP_FILE --ants-config $CONFIG_FILE
