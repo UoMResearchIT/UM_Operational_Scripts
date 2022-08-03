@@ -35,7 +35,7 @@ Replace `<username>` with your Met Office user account name, and enter your pass
 
 ## 1. Set up
 
-###### Download v0.19 Ancil Tools
+### Download v0.19 Ancil Tools
 
 These should be taken directly from the Met Office code repository:
 
@@ -45,7 +45,7 @@ svn checkout https://code.metoffice.gov.uk/svn/ancil/ants/trunk/rose-test/resour
 cp resources/transforms/cci2jules.json bin/
 ```
 
-###### Download ESACCI Land Use Data
+### Download ESACCI Land Use Data
 
 ESA CCI data should be downloaded from Copernicus:
 
@@ -53,27 +53,31 @@ ESA CCI data should be downloaded from Copernicus:
 
 If data is taken from Copernicus then it is required to remove a dimension, as ants expects 2D data. This is accounted for in the ants.ocean.slurm scripts.
 
-###### Water bodies
+### Water bodies
 
 These are added to the CCI, as CCI does not differentiate between ocean and in-land water bodies.
 
 [Index of /neodc/esacci/land_cover/data/water_bodies/v4.0/](https://dap.ceda.ac.uk/neodc/esacci/land_cover/data/water_bodies/v4.0/)
 
-###### MODIS land cover
+### MODIS land cover
 
 MODIS data, use modis_landcover_qdeg (quarter degree).
 
 [ISLSCP II MODIS (Collection 4) IGBP Land Cover, 2000-2001 , https://doi.org/10.3334/ORNLDAAC/968](https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=968)
 
-###### C3/C4 grass ratio data
+### C3/C4 grass ratio data
+
+##### Old Method (not recommended)
 
 CCI data does not contain C4 grass, this is calculated by using C3 grass data, and applying a predetermined C3/C4 ratio. The ANTS resources contains data from [ISLSCP II C4 Vegetation Percentage](https://daac.ornl.gov/ISLSCP_II/guides/c4_percent_1deg.html) (viewing this will require you to create an EarthData login account). To use this you can copy the netcdf datafile: `cp resources/c4_percent_1d.nc .`. However, this file is at ~1 degree resolution and when modelling at higher resolutions this will produce a blocky effect.
 
+##### grassmapr R package (recommended)
+
 Instead we recommend use the grassmapr R package to create higher resolution data. Documentation is available at https://rdrr.io/github/rebeccalpowell/grassmapr/man/grassmapr.html, and the code is at https://github.com/rebeccalpowell/grassmapr. This package is created by the Powell et al. (2012) [Vegetation and soil carbon‐13 isoscapes for South America: integrating remote sensing and ecosystem isotope measurements - Powell - 2012 - Ecosphere - Wiley Online Library](https://esajournals.onlinelibrary.wiley.com/doi/pdf/10.1890/ES12-00162.1)
 
-This should be installed locally, and the script `script.R` run to generate the file **C4_ratio_ndvi.tif**. 
+This can be run locally. First download this repository, and then download the input data: `git clone https://github.com/rebeccalpowell/grassmapr-data.git`. Follow the documentation to install the R package, and then run the script `c3c4.R` (editing this first to set the correct data path) to generate the file **C4_ratio_ndvi.tif**. 
 
-###### Upload to archer2
+### Upload to archer2
 
 If above files are downloaded locally, then transfer to them ARCHER2:
 
@@ -81,7 +85,7 @@ If above files are downloaded locally, then transfer to them ARCHER2:
 scp <filename> <username>@login.archer2.ac.uk:/work/n02/n02/<username>/<antsfolder>
 ```
 
-###### Copy some existing UM ancils
+### Copy some existing UM ancils
 
 First ancillary data should be created, using the ESA CCI land use data, for your nested domain (using suite `u-<id>`).
 
@@ -96,7 +100,7 @@ First ancillary data should be created, using the ESA CCI land use data, for you
   cp /work/n02/n02/<username>/cylc-run/u-<id>/share/data/ancils/Regn1/resn_1/grid.nl .
   ```
   
-###### Patch the UM Ancil Tools
+### Patch the UM Ancil Tools
 
 Some changes have been made to these tools for this workflow. You should apply these changes using the included patch files.
 ```bash
