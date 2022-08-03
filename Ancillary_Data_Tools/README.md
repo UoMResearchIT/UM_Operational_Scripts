@@ -35,6 +35,28 @@ Replace `<username>` with your Met Office user account name, and enter your pass
 
 ## 1. Set up
 
+### Python (Conda) and R package installation
+
+Some tools will require python or R packages to run. Below are the instructions for installing these for each language.
+
+#### Python (Conda)
+
+We recommend downloading and installing [Miniconda](https://docs.conda.io/en/latest/miniconda.html), following the instructions on their website. This can be done in your userspace. Once you have installed this software you should activate the installation:
+```bash
+conda init bash
+```
+(if you are not using `bash` change this to your shell). Then you should set the activate flag, so that the base conda environment is not automatically activated:
+```bash
+conda config --set auto_activate_base False
+```
+This will ensure that the installed conda environments do not clash with other ARCHER2 software when they are not required. Log out, and log back in to activate these changes.
+
+Then you should create the environment containing the required packages:
+```bash
+conda conda env create --file env_ants.yaml --name um_ants
+```
+
+
 ### Download v0.19 Ancil Tools
 
 These should be taken directly from the Met Office code repository:
