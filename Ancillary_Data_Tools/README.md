@@ -56,6 +56,19 @@ Then you should create the environment containing the required packages:
 conda conda env create --file env_ants.yaml --name um_ants
 ```
 
+#### R
+
+R is available on ARCHER2, this can be loaded using the module system:
+```bash
+module load cray-R
+```
+
+You should make a directory for R to install local libraries, and run the library install script:
+```bash
+mkdir .Rlib
+Rscript Rsetup.R
+```
+This will take some time to run. If you want to install the libraries in a different location then change the `libPaths` setting in the Rsetup.R and c2c4.R scripts to match that location.
 
 ### Download v0.19 Ancil Tools
 
@@ -97,7 +110,18 @@ CCI data does not contain C4 grass, this is calculated by using C3 grass data, a
 
 Instead we recommend use the grassmapr R package to create higher resolution data. Documentation is available at https://rdrr.io/github/rebeccalpowell/grassmapr/man/grassmapr.html, and the code is at https://github.com/rebeccalpowell/grassmapr. This package is created by the Powell et al. (2012) [Vegetation and soil carbon‐13 isoscapes for South America: integrating remote sensing and ecosystem isotope measurements - Powell - 2012 - Ecosphere - Wiley Online Library](https://esajournals.onlinelibrary.wiley.com/doi/pdf/10.1890/ES12-00162.1)
 
-This can be run locally. First download this repository, and then download the input data: `git clone https://github.com/rebeccalpowell/grassmapr-data.git`. Follow the documentation to install the R package, and then run the script `c3c4.R` (editing this first to set the correct data path) to generate the file **C4_ratio_ndvi.tif**. 
+Download and extract the input dataset:
+```bash
+wget https://github.com/rebeccalpowell/grassmapr-data/archive/refs/heads/master.zip
+unzip master.zip
+```
+This will create a directory `grassmapr-data-master`.
+
+Then you can run the `c3c4.R` script:
+```bash
+c3c4.R
+```
+This will generate the file **C4_ratio_ndvi.tif**. 
 
 ### Upload to archer2
 
