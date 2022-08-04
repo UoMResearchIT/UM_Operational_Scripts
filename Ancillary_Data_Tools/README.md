@@ -116,11 +116,12 @@ unzip master.zip
 ```
 This will create a directory `grassmapr-data-master`.
 
-Then you can run the `c3c4.R` script:
+Then you can run the `c3c4.R` script, using the R conda environment:
 ```bash
-c3c4.R
+conda activate um_ants_r
+Rscript c3c4.R
 ```
-This will generate the file **C4_ratio_ndvi.tif**. 
+This will generate the file **C4_ratio_ndvi.tif** in the `grassmapr-data-master` directory.
 
 ### Upload to archer2
 
