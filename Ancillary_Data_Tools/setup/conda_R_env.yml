@@ -1,0 +1,12 @@
+name: um_ants_r
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - r-rgdal
+  - r-base
+  - r-remotes
+  - r-terra
+  - r-raster
+prefix: /work/n02/n02/lowe/miniconda3/envs/um_ants_r
