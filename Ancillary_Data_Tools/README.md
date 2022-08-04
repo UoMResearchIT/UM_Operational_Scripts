@@ -53,22 +53,21 @@ This will ensure that the installed conda environments do not clash with other A
 
 Then you should create the environment containing the required packages:
 ```bash
-conda conda env create --file env_ants.yaml --name um_ants
+conda env create --file env_ants.yaml --name um_ants
 ```
 
 #### R
 
-R is available on ARCHER2, this can be loaded using the module system:
+R is available on ARCHER2, but we will install it using Conda, so that we can install the required R libraries too:
 ```bash
-module load cray-R
+conda env create --file setup/conda_R_env.yml 
 ```
 
-You should make a directory for R to install local libraries, and run the library install script:
+Once the conda `um_ants_r` environment is setup we activate it, and install the extra libraries needed:
 ```bash
-mkdir .Rlib
-Rscript Rsetup.R
+conda activate um_ants_r
+Rscript setup/install_grassmapr.R
 ```
-This will take some time to run. If you want to install the libraries in a different location then change the `libPaths` setting in the Rsetup.R and c2c4.R scripts to match that location.
 
 ### Download v0.19 Ancil Tools
 
