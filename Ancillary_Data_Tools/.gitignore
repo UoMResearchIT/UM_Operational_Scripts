@@ -1,0 +1,11 @@
+new.vegfrac*
+qrparm.veg.frac.cci
+*.tif
+*.nc
+ants.log
+slurm*out
+*.asc
+cci_maskout/*
+.config/
+.local/
+core
